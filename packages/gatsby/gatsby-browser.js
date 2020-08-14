@@ -19,7 +19,7 @@ exports.onClientEntry = function(_, pluginParams) {
 
     const integrations = [...(pluginParams.integrations || [])];
 
-    if (hasTracingEnabled()) {
+    if (hasTracingEnabled(pluginParams)) {
       if (BrowserTracingIntegration) {
         integrations.push(new BrowserTracingIntegration());
       } else if (TracingIntegration) {
