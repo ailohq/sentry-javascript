@@ -1,6 +1,7 @@
 exports.onClientEntry = function(_, pluginParams) {
   require.ensure(['@sentry/react'], function(require) {
     const Sentry = require('@sentry/react');
+    const hasTracingEnabled = require('@sentry/utils').hasTracingEnabled;
 
     let TracingIntegration = undefined;
     let BrowserTracingIntegration = undefined;
@@ -16,10 +17,9 @@ exports.onClientEntry = function(_, pluginParams) {
       /* no-empty */
     }
 
-    const tracesSampleRate = pluginParams.tracesSampleRate !== undefined ? pluginParams.tracesSampleRate : 0;
     const integrations = [...(pluginParams.integrations || [])];
 
-    if (tracesSampleRate) {
+    if (hasTracingEnabled()) {
       if (BrowserTracingIntegration) {
         integrations.push(new BrowserTracingIntegration());
       } else if (TracingIntegration) {
@@ -34,7 +34,8 @@ exports.onClientEntry = function(_, pluginParams) {
       // eslint-disable-next-line no-undef
       dsn: __SENTRY_DSN__,
       ...pluginParams,
-      tracesSampleRate,
+      tracesSampleRate: pluginParams.tracesSampleRate,
+      tracesSampler: pluginParams.tracesSampler,
       integrations,
     });
 
