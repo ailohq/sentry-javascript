@@ -233,13 +233,13 @@ export function addResourceSpans(
   }
 
   const data: Record<string, any> = {};
-  if (entry.transferSize) {
+  if ('transferSize' in entry) {
     data.transferSize = entry.transferSize;
   }
-  if (entry.encodedBodySize) {
+  if ('encodedBodySize' in entry) {
     data.encodedBodySize = entry.encodedBodySize;
   }
-  if (entry.decodedBodySize) {
+  if ('decodedBodySize' in entry) {
     data.decodedBodySize = entry.decodedBodySize;
   }
 
@@ -249,7 +249,7 @@ export function addResourceSpans(
   _startChild(transaction, {
     description: resourceName,
     endTimestamp,
-    op: entry.initiatorType && entry.initiatorType !== '' ? `resource.${entry.initiatorType}` : 'resource',
+    op: entry.initiatorType ? `resource.${entry.initiatorType}` : 'resource',
     startTimestamp,
     data,
   });
