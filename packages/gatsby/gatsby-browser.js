@@ -1,5 +1,5 @@
 exports.onClientEntry = function(_, pluginParams) {
-  require.ensure(['@sentry/react'], function(require) {
+  require.ensure(['@sentry/react', '@sentry/utils'], function(require) {
     const Sentry = require('@sentry/react');
     const hasTracingEnabled = require('@sentry/utils').hasTracingEnabled;
 
@@ -34,8 +34,6 @@ exports.onClientEntry = function(_, pluginParams) {
       // eslint-disable-next-line no-undef
       dsn: __SENTRY_DSN__,
       ...pluginParams,
-      tracesSampleRate: pluginParams.tracesSampleRate,
-      tracesSampler: pluginParams.tracesSampler,
       integrations,
     });
 
